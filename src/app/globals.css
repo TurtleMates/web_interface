@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
+/* ── Design tokens ─────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-base: 222 47% 11%;      /* slate-900 */
+  --bg-surface: 217 33% 17%;   /* slate-800 */
+  --bg-elevated: 215 25% 22%;  /* slate-700 */
+  --text-primary: 210 40% 96%; /* slate-100 */
+  --text-secondary: 215 20% 65%;
+  --text-muted: 215 14% 45%;
+  --accent-blue: 217 91% 60%;
+  --accent-cyan: 188 95% 43%;
+  --accent-emerald: 160 84% 39%;
+  --accent-amber: 38 92% 50%;
+  --accent-red: 0 84% 60%;
+  --border-subtle: 215 25% 22%;
+  --glow-blue: 217 91% 60%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base ──────────────────────────────────────────────────────────── */
+html, body {
+  height: 100%;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: hsl(222 47% 11%);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, hsla(217 91% 60% / 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, hsla(160 84% 39% / 0.05) 0%, transparent 50%);
+  color: hsl(var(--text-primary));
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* ── Glass card ────────────────────────────────────────────────────── */
+.card {
+  background: hsla(217 33% 17% / 0.55);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid hsla(215 25% 40% / 0.18);
+  border-radius: 1rem;
+  box-shadow:
+    0 0 0 1px hsla(0 0% 100% / 0.03) inset,
+    0 4px 24px hsla(222 47% 6% / 0.4);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  border-color: hsla(215 25% 50% / 0.25);
+}
+
+/* ── Section header ────────────────────────────────────────────────── */
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(var(--text-secondary));
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsla(215 25% 40% / 0.4);
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent-blue));
+}
+
+/* ── Glow animations ──────────────────────────────────────────────── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px hsla(0 84% 60% / 0.4), inset 0 0 12px hsla(0 84% 60% / 0.1); }
+  50% { box-shadow: 0 0 24px hsla(0 84% 60% / 0.6), inset 0 0 18px hsla(0 84% 60% / 0.15); }
+}
+.glow-stop { animation: glow-pulse 2s ease-in-out infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ── Custom range slider ───────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: hsla(215 25% 30% / 0.6);
+  border-radius: 100px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: hsl(var(--accent-blue));
+  cursor: pointer;
+  box-shadow: 0 0 10px hsla(217 91% 60% / 0.5);
+  transition: box-shadow 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 16px hsla(217 91% 60% / 0.7);
+}
+
+/* ── Input styling ─────────────────────────────────────────────────── */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ── Live badge ────────────────────────────────────────────────────── */
+@keyframes live-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.live-dot {
+  animation: live-dot 1.5s ease-in-out infinite;
 }
